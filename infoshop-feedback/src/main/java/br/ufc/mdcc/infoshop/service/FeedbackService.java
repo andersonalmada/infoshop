@@ -63,4 +63,14 @@ public class FeedbackService {
 
 		return false;
 	}
+
+	public List<Feedback> getFeedbacksByProduct(Integer id) {
+		List<Feedback> result = feedbackRepo.findByProductId(id);
+
+		if (result != null) {
+			return result;
+		}
+
+		return null;
+	}
 }

@@ -11,5 +11,6 @@ public interface IFeedbackRepository extends JpaRepository<Feedback, Integer> {
 
 	@Transactional
 	List<Feedback> deleteByProductId(Integer id);
-}
 
+	List<Feedback> findByProductId(Integer id);
+}

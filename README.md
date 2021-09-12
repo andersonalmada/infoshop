@@ -1,4 +1,4 @@
-# Infoshop
+# InfoShop
 
 - Application based-on microservices for the sale of computer products
 

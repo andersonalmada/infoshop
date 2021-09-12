@@ -43,7 +43,7 @@ public class FeedbackController {
 	public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
 		return new ResponseEntity<Feedback>(
 				feedbackService.addFeedback(feedback.getProductId(), feedback.getComment(), feedback.getEvaluation()),
-				HttpStatus.OK);
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")

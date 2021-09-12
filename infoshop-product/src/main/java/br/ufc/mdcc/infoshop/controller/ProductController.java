@@ -42,7 +42,7 @@ public class ProductController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Product> addProduct(@RequestBody Product Product) {
 		return new ResponseEntity<Product>(productService.addProduct(Product.getName(), Product.getPrice()),
-				HttpStatus.OK);
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")

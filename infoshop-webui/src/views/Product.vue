@@ -1,39 +1,26 @@
 <template>
-  Id: <input type="text" name="" id="0" v-model="id" /> <br />
+  <br />
   Name: <input type="text" name="" id="1" v-model="name" /> <br />
-  Price: <input type="text" name="" id="2" v-model="price" /> <br />
+  Price: <input type="text" name="" id="2" v-model="price" /> <br /><br />
 
-  {{ post }} <br />
+  <button @click="createProduct">Create</button>
+  | <button @click="fetchProducts">Fetch All</button><br /><br />
 
-  <button @click="deletePosts">Deletar Post</button>
-  <button @click="putPosts">Atualizar Post</button>
-  <button @click="inserirPosts">Inserir Post</button>
-  <button @click="fetchPosts">Buscar Posts</button>
-  <button @click="fetchByIdPosts">Buscar Post</button>
+  Id: <input type="text" name="" id="0" v-model="id" /> <br /><br />
+
+  <button @click="deleteProduct">Delete</button>
+  | <button @click="putProduct">Update</button> |
+  <button @click="fetchByIdProduct">Fetch</button><br /><br />
+
+  {{ product }} <br />
+
   <ul>
-    <li v-for="post in posts" :key="post.id">
-      Id: {{ post.id }} <br />
-      Name: {{ post.name }} <br />
-      Price: {{ post.price }} <br />
+    <li v-for="product in products" :key="product.id">
+      Id: {{ product.id }} <br />
+      Name: {{ product.name }} <br />
+      Price: {{ product.price }} <br />
     </li>
   </ul>
-  File:
-  <input type="file" id="file" ref="file" name="image" />
-  <br />
-
-  <img
-    v-if="post.id"
-    :src="
-      'https://almada-product.000webhostapp.com/uploads/products/' +
-        post.id +
-        '?' +
-        Math.random()
-    "
-    width="200"
-    height="150"
-    alt="Nada"
-    srcset=""
-  />
 </template>
 
 <script>
@@ -44,54 +31,27 @@ export default {
   data() {
     return {
       id: "",
-      userId: "",
       price: "",
       name: "",
-      posts: [],
-      post: "",
-      baseURI: "https://almada-product-api.herokuapp.com/products",
-      baseUpload: "https://almada-product-api.herokuapp.com/upload",
+      products: [],
+      product: null,
+      baseURI: "http://localhost:8080/api/products",
     };
   },
   methods: {
-    handleFileUpload(id) {
-      this.file = this.$refs.file.files[0];
-
-      let obj = {
-        resource: "products",
-        id: id,
-      };
-      let json = JSON.stringify(obj);
-
-      let form = new FormData();
-      form.append("obj", json);
-      form.append("file", this.file);
-
-      console.log(form.getAll("file"));
-
-      axios
-        .post(this.baseUpload, form, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          console.log(result);
-        });
-    },
-    fetchPosts: function() {
+    fetchProducts: function() {
       axios.get(this.baseURI).then((result) => {
         console.log(result);
-        this.posts = result.data;
+        this.products = result.data;
       });
     },
-    fetchByIdPosts: function() {
+    fetchByIdProduct: function() {
       axios.get(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
-        this.post = result.data;
+        this.product = result.data;
       });
     },
-    inserirPosts: function() {
+    createProduct: function() {
       axios
         .post(this.baseURI, {
           name: this.name,
@@ -99,19 +59,18 @@ export default {
         })
         .then((result) => {
           if (result.status == 201) {
-            alert("Inserido com sucesso !!");
-            this.handleFileUpload(result.data.id);
+            alert("Add product !!");
           }
         })
         .catch((error) => {
           if (error.response.status == 400) {
-            alert("Dados incorretos !!");
+            alert("Incorrect data !!");
           } else {
-            alert("Problema desconhecido !!");
+            alert("Unknown problem !!");
           }
         });
     },
-    putPosts: function() {
+    putProduct: function() {
       axios
         .put(this.baseURI + "/" + this.id, {
           name: this.name,
@@ -119,21 +78,13 @@ export default {
         })
         .then((result) => {
           console.log(result.data);
-          this.handleFileUpload(result.data.id);
         });
     },
-    deletePosts: function() {
+    deleteProduct: function() {
       axios.delete(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
       });
     },
-  },
-  created() {
-    if (localStorage.getItem("user")) {
-      console.log("OK");
-    } else {
-      this.$router.push("/");
-    }
   },
 };
 </script>

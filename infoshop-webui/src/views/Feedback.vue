@@ -1,5 +1,7 @@
 <template>
   <br />
+  <h3>Feedback</h3>
+  <br />
   Comment: <input type="text" name="" id="1" v-model="comment" /> <br />
   Evaluation: <input type="text" name="" id="2" v-model="evaluation" />
   <br /><br />
@@ -25,7 +27,7 @@
 import axios from "axios";
 
 export default {
-  name: "Home",
+  name: "Feedback",
   data() {
     return {
       id: "",

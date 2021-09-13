@@ -1,5 +1,7 @@
 <template>
   <br />
+  <h3>Product</h3>
+  <br />
   Name: <input type="text" name="" id="1" v-model="name" /> <br />
   Price: <input type="text" name="" id="2" v-model="price" /> <br /><br />
 

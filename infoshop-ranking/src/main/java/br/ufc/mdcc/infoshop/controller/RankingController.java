@@ -25,7 +25,7 @@ import br.ufc.mdcc.infoshop.model.Ranking;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "/api/rankings")
+@RequestMapping(path = "/api/ranking")
 public class RankingController {
 
 	@RequestMapping(method = RequestMethod.POST, value="compute")

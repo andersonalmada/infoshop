@@ -1,39 +1,24 @@
 <template>
-  Id: <input type="text" name="" id="0" v-model="id" /> <br />
-  Name: <input type="text" name="" id="1" v-model="name" /> <br />
-  Price: <input type="text" name="" id="2" v-model="price" /> <br />
+  <br />
+  Comment: <input type="text" name="" id="1" v-model="comment" /> <br />
+  Evaluation: <input type="text" name="" id="2" v-model="evaluation" />
+  <br /><br />
 
-  {{ post }} <br />
+  <button @click="createFeedback">Create</button>
+  | <button @click="fetchFeedbacks">Fetch All</button><br /><br />
 
-  <button @click="deletePosts">Deletar Post</button>
-  <button @click="putPosts">Atualizar Post</button>
-  <button @click="inserirPosts">Inserir Post</button>
-  <button @click="fetchPosts">Buscar Posts</button>
-  <button @click="fetchByIdPosts">Buscar Post</button>
+  Id: <input type="text" name="" id="0" v-model="id" /> <br /><br />
+
+  <button @click="deleteFeedback">Delete</button>
+  | <button @click="putFeedback">Update</button>
+
   <ul>
-    <li v-for="post in posts" :key="post.id">
-      Id: {{ post.id }} <br />
-      Name: {{ post.name }} <br />
-      Price: {{ post.price }} <br />
+    <li v-for="feedback in feedbacks" :key="feedback.id">
+      Id: {{ feedback.id }} <br />
+      Comment: {{ feedback.comment }} <br />
+      Evaluation: {{ feedback.evaluation }} <br />
     </li>
   </ul>
-  File:
-  <input type="file" id="file" ref="file" name="image" />
-  <br />
-
-  <img
-    v-if="post.id"
-    :src="
-      'https://almada-product.000webhostapp.com/uploads/products/' +
-        post.id +
-        '?' +
-        Math.random()
-    "
-    width="200"
-    height="150"
-    alt="Nada"
-    srcset=""
-  />
 </template>
 
 <script>
@@ -44,96 +29,58 @@ export default {
   data() {
     return {
       id: "",
-      userId: "",
-      price: "",
-      name: "",
-      posts: [],
-      post: "",
-      baseURI: "https://almada-product-api.herokuapp.com/products",
-      baseUpload: "https://almada-product-api.herokuapp.com/upload",
+      productId: "",
+      comment: "",
+      evaluation: "",
+      feedbacks: [],
+      baseURI: "http://localhost:8081/api/feedbacks",
     };
   },
   methods: {
-    handleFileUpload(id) {
-      this.file = this.$refs.file.files[0];
-
-      let obj = {
-        resource: "products",
-        id: id,
-      };
-      let json = JSON.stringify(obj);
-
-      let form = new FormData();
-      form.append("obj", json);
-      form.append("file", this.file);
-
-      console.log(form.getAll("file"));
-
-      axios
-        .post(this.baseUpload, form, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          console.log(result);
-        });
-    },
-    fetchPosts: function() {
-      axios.get(this.baseURI).then((result) => {
+    fetchFeedbacks: function() {
+      axios.get(this.baseURI + "/product/" + this.productId).then((result) => {
         console.log(result);
-        this.posts = result.data;
+        this.feedbacks = result.data;
       });
     },
-    fetchByIdPosts: function() {
-      axios.get(this.baseURI + "/" + this.id).then((result) => {
-        console.log(result);
-        this.post = result.data;
-      });
-    },
-    inserirPosts: function() {
+    createFeedback: function() {
       axios
         .post(this.baseURI, {
-          name: this.name,
-          price: this.price,
+          productId: this.productId,
+          comment: this.comment,
+          evaluation: this.evaluation,
         })
         .then((result) => {
           if (result.status == 201) {
-            alert("Inserido com sucesso !!");
-            this.handleFileUpload(result.data.id);
+            alert("Add feedback !!");
           }
         })
         .catch((error) => {
           if (error.response.status == 400) {
-            alert("Dados incorretos !!");
+            alert("Incorrect data !!");
           } else {
-            alert("Problema desconhecido !!");
+            alert("Unknown problem !!");
           }
         });
     },
-    putPosts: function() {
+    putFeedback: function() {
       axios
         .put(this.baseURI + "/" + this.id, {
-          name: this.name,
-          price: this.price,
+          comment: this.comment,
+          evaluation: this.evaluation,
         })
         .then((result) => {
           console.log(result.data);
-          this.handleFileUpload(result.data.id);
         });
     },
-    deletePosts: function() {
+    deleteFeedback: function() {
       axios.delete(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
       });
     },
   },
   created() {
-    if (localStorage.getItem("user")) {
-      console.log("OK");
-    } else {
-      this.$router.push("/");
-    }
+    this.productId = this.$route.params.id;
   },
 };
 </script>

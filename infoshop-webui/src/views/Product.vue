@@ -16,7 +16,7 @@
 
   <ul>
     <li v-for="product in products" :key="product.id">
-      Id: {{ product.id }} <br />
+      Id: <a :href="'/feedback/' + product.id"> {{ product.id }} </a><br />
       Name: {{ product.name }} <br />
       Price: {{ product.price }} <br />
     </li>

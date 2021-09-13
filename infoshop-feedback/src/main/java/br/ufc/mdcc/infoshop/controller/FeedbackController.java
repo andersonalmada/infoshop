@@ -38,6 +38,17 @@ public class FeedbackController {
 
 		return new ResponseEntity<Feedback>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/product/{id}")
+	public ResponseEntity<List<Feedback>> getFeedbacksByProduct(@PathVariable("id") Integer id) {
+		List<Feedback> result = feedbackService.getFeedbacksByProduct(id);
+
+		if (result != null) {
+			return new ResponseEntity<List<Feedback>>(result, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<List<Feedback>>(HttpStatus.NOT_FOUND);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {

@@ -16,7 +16,7 @@ const routes = [
     component: Product,
   },
   {
-    path: "/feedback",
+    path: "/feedback/:id",
     name: "Feedback",
     component: Feedback,
   },

@@ -5,6 +5,9 @@
 ## Microservices:
   - Feedback
   - Product
+  - Ranking
+  - Web-UI
 
 ## Technologies used: 
   - Java
+  - Vue.js

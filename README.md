@@ -11,3 +11,4 @@
 ## Technologies used: 
   - Java
   - Vue.js
+  - Docker

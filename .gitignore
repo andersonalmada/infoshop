@@ -1,5 +1,5 @@
 # not ignore
-!images/
+!images/*
 
 # Compiled class file
 *.class

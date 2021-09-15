@@ -12,3 +12,4 @@
   - Java
   - Vue.js
   - Docker
+  - Kubernetes

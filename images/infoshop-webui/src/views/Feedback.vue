@@ -39,13 +39,13 @@ export default {
     };
   },
   methods: {
-    fetchFeedbacks: function() {
+    fetchFeedbacks: function () {
       axios.get(this.baseURI + "/product/" + this.productId).then((result) => {
         console.log(result);
         this.feedbacks = result.data;
       });
     },
-    createFeedback: function() {
+    createFeedback: function () {
       axios
         .post(this.baseURI, {
           productId: this.productId,
@@ -65,7 +65,7 @@ export default {
           }
         });
     },
-    putFeedback: function() {
+    putFeedback: function () {
       axios
         .put(this.baseURI + "/" + this.id, {
           comment: this.comment,
@@ -75,7 +75,7 @@ export default {
           console.log(result.data);
         });
     },
-    deleteFeedback: function() {
+    deleteFeedback: function () {
       axios.delete(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
       });

@@ -38,22 +38,30 @@ export default {
       products: [],
       product: null,
       baseURI: "http://localhost:31000/api/products",
+      baseURIFeedback: "http://localhost:31001/api/feedbacks",
     };
   },
   methods: {
-    fetchProducts: function() {
+    fetchProducts: function () {
       axios.get(this.baseURI).then((result) => {
         console.log(result);
         this.products = result.data;
       });
     },
-    fetchByIdProduct: function() {
+    fetchByIdProduct: function () {
       axios.get(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
         this.product = result.data;
+
+        axios
+          .get(this.baseURIFeedback + "/product/" + this.product.id)
+          .then((result) => {
+            console.log(result);
+            this.product.feedbacks = result.data;
+          });
       });
     },
-    createProduct: function() {
+    createProduct: function () {
       axios
         .post(this.baseURI, {
           name: this.name,
@@ -72,7 +80,7 @@ export default {
           }
         });
     },
-    putProduct: function() {
+    putProduct: function () {
       axios
         .put(this.baseURI + "/" + this.id, {
           name: this.name,
@@ -82,7 +90,7 @@ export default {
           console.log(result.data);
         });
     },
-    deleteProduct: function() {
+    deleteProduct: function () {
       axios.delete(this.baseURI + "/" + this.id).then((result) => {
         console.log(result);
       });

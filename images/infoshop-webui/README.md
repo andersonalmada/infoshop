@@ -1,4 +1,4 @@
-# hello2
+# InfoShop WEBUI
 
 ## Project setup
 ```

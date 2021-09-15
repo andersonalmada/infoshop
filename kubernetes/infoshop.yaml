@@ -129,7 +129,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: product
+  - name: tcp-product
     nodePort: 31000
     port: 31000
     protocol: TCP
@@ -167,7 +167,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: feedback
+  - name: tcp-feedback
     nodePort: 31001
     port: 31001
     protocol: TCP
@@ -205,7 +205,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: ranking
+  - name: tcp-ranking
     nodePort: 31002
     port: 31002
     protocol: TCP
@@ -244,7 +244,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: webui
+  - name: tcp-webui
     nodePort: 31003
     port: 31003
     protocol: TCP

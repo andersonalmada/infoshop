@@ -1,0 +1,53 @@
+databaseChangeLog:
+  
+  - changeSet:
+      id: create-table-product
+      author: almada
+      runOnChange: true
+      changes:
+        - createTable:
+            schema: public
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+              - column:
+                  name: price
+                  type: real
+
+  - changeSet:
+      id: create-table-feedback
+      author: almada
+      runOnChange: true
+      changes:
+        - createTable:
+            schema: public
+            tableName: feedback
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  startWith: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: evaluation
+                  type: int
+              - column:
+                  name: product_id
+                  type: int
+                 

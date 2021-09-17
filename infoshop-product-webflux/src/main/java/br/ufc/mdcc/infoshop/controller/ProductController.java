@@ -2,6 +2,8 @@ package br.ufc.mdcc.infoshop.controller;
 
 import static org.springframework.http.ResponseEntity.noContent;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufc.mdcc.infoshop.model.Feedback;
 import br.ufc.mdcc.infoshop.model.Product;
 import br.ufc.mdcc.infoshop.service.ProductService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 @RestController
 @CrossOrigin
@@ -36,8 +40,8 @@ public class ProductController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
-	public Mono<ResponseEntity<Product>> getProduct(@PathVariable("id") Integer id) {
-		return productService.getProduct(id).map(result -> ResponseEntity.status(HttpStatus.OK).body(result));
+	public Mono<Product> getProduct(@PathVariable("id") Integer id) {
+		return productService.getProduct(id);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")

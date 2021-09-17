@@ -1,11 +1,6 @@
 package br.ufc.mdcc.infoshop.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
-@Table
 public class Feedback {
-	@Id
 	int id;
 	String comment;
 	int evaluation;

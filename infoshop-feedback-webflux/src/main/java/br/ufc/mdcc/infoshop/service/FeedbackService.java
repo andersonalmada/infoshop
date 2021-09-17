@@ -27,4 +27,27 @@ public class FeedbackService {
 	public Flux<Feedback> getFeedbacksByProduct(int productId) {
 		return feedRepo.findAllByProductId(productId);
 	}
+	
+	public Mono<Feedback> getFeedback(Integer id) {
+		return feedRepo.findById(id);	}
+	
+	@Transactional
+	public Mono<Void> removeFeedback(Integer id) {
+		return feedRepo.deleteById(id);
+	}	
+	
+	public Mono<Integer> removeFeedbacksByProductId(Integer id) {
+		System.out.println("ok" + id);
+		return feedRepo.deleteAllByProductId(id);
+	}
+	
+	@Transactional
+	public Mono<Feedback> updateFeedback(int id, Feedback feedback) {
+		return feedRepo.findById(id).flatMap(result -> {
+			result.setComment(feedback.getComment());
+			result.setEvaluation(feedback.getEvaluation());
+			
+			return feedRepo.save(result);
+		});
+	}
 }

@@ -23,7 +23,7 @@ public class FeedbackService {
 	public Flux<Feedback> getFeedbacks() {
 		return feedRepo.findAll();
 	}
-	
+
 	public Flux<Feedback> getFeedbacksByProduct(int productId) {
 		return feedRepo.findAllByProductId(productId);
 	}

@@ -10,12 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.ufc.mdcc.infoshop.model.Feedback;
 import br.ufc.mdcc.infoshop.model.Product;
-import br.ufc.mdcc.infoshop.model.ProductFeedback;
 import br.ufc.mdcc.infoshop.repository.IFeedbackRepository;
-import br.ufc.mdcc.infoshop.repository.IProductFeedbackRepository;
 import br.ufc.mdcc.infoshop.repository.IProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 @Service
 public class ProductService {
@@ -26,9 +25,6 @@ public class ProductService {
 	@Autowired
 	public IFeedbackRepository feedRepo;
 
-	@Autowired
-	public IProductFeedbackRepository productItemRepo;
-
 	@Transactional
 	public Mono<Product> addProduct(Product product) {
 		return productRepo.save(product)
@@ -38,49 +34,42 @@ public class ProductService {
 	}
 
 	public Flux<Product> getProducts() {
-		Flux<Product> flux = productRepo.findAll()
-				.flatMap(product -> Mono.just(product)
-						.zipWith(feedRepo.findAllByProductId(product.getId()).collectList())
-						).map(result -> {
-							Product t1 = result.getT1();
-							t1.setFeedbacks(result.getT2());
-							
-							return result.getT1();
-						});
-		
+		Flux<Product> flux = productRepo.findAll().flatMap(
+				product -> Mono.just(product).zipWith(feedRepo.findAllByProductId(product.getId()).collectList()))
+				.map(result -> {
+					Product t1 = result.getT1();
+					t1.setFeedbacks(result.getT2());
+
+					return result.getT1();
+				});
+
 		return flux;
 	}
 
-	public boolean removeProduct(Integer id) {
-		return false;
+	@Transactional
+	public Mono<Void> removeProduct(Integer id) {
+		return getProduct(id).zipWith(feedRepo.deleteAllByProductId(id)).map(Tuple2::getT1)
+				.flatMap(productRepo::delete);
 	}
 
-	public Product getProduct(Integer id) {
+	public Mono<Product> getProduct(Integer id) {
+		return productRepo.findById(id).flatMap(
+				product -> Mono.just(product).zipWith(feedRepo.findAllByProductId(product.getId()).collectList()))
+				.map(result -> {
+					Product t1 = result.getT1();
+					t1.setFeedbacks(result.getT2());
 
-		return null;
+					return result.getT1();
+				});
 	}
 
-	public Product updateProduct(Integer id, String name, Float price) {
-
-		return null;
-	}
-
-	private Mono<Product> loadRelations(Product product) {
-		Mono<Product> mono = Mono.just(product);
-
-		mono.zipWith(feedRepo.findAllByProductId(product.getId()).collectList())
-				.map(result -> result.getT1().setFeedbacks(result.getT2()));
-
-		return mono;
-	}
-
-	private Collection<ProductFeedback> toProductFeedbacks(Integer productId, Collection<Feedback> feedbacks) {
-		if (feedbacks == null) {
-			return new LinkedHashSet<>();
-		}
-
-		return feedbacks.stream().map(feedback -> new ProductFeedback(productId, feedback.getId()))
-				.collect(Collectors.toSet());
+	public Mono<Product> updateProduct(int id, Product product) {
+		return productRepo.findById(id).flatMap(result -> {
+			result.setName(product.getName());
+			result.setPrice(product.getPrice());
+			
+			return productRepo.save(result);
+		});
 	}
 
 	private Collection<Feedback> toFeedbacks(int productId, Collection<Feedback> feedbacks) {

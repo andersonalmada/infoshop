@@ -11,5 +11,9 @@
 ## Technologies used: 
   - Java
   - Vue.js
+  - Spring Webflux
+  - Postgres
+  - R2DBC
+  - Liquibase
   - Docker
   - Kubernetes

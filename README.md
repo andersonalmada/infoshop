@@ -11,5 +11,8 @@
 ## Technologies used: 
   - Java
   - Vue.js
+  - Spring
+  - Postgres
+  - Hibernate
   - Docker
   - Kubernetes

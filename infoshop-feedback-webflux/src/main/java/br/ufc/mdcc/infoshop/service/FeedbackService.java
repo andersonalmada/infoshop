@@ -37,7 +37,6 @@ public class FeedbackService {
 	}	
 	
 	public Mono<Integer> removeFeedbacksByProductId(Integer id) {
-		System.out.println("ok" + id);
 		return feedRepo.deleteAllByProductId(id);
 	}
 	

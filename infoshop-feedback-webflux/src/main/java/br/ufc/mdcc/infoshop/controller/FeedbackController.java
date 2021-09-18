@@ -59,7 +59,6 @@ public class FeedbackController {
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/product/{id}")
 	public Mono<ResponseEntity<Void>> deleteAll(@PathVariable("id") Integer id) {
-		System.out.println(id);
 		return feedbackService.removeFeedbacksByProductId(id).map(empty -> noContent().build());
 	}
 }

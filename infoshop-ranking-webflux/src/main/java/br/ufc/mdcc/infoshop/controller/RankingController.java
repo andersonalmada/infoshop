@@ -28,8 +28,8 @@ public class RankingController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Mono<List<Ranking>> getRanking(@RequestBody String feedbacks) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Feedback> listFeedbacks;		
-
+		List<Feedback> listFeedbacks;	
+		
 		try {
 			listFeedbacks = objectMapper.readValue(feedbacks, new TypeReference<List<Feedback>>() {
 			});

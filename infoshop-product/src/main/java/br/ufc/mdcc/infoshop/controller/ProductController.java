@@ -25,6 +25,10 @@ public class ProductController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Product>> getProducts() {
+		if(productService.getProducts() == null) {
+			return new ResponseEntity<List<Product>>(HttpStatus.GATEWAY_TIMEOUT);
+		} 
+		
 		return new ResponseEntity<List<Product>>(productService.getProducts(), HttpStatus.OK);
 	}
 

@@ -1,0 +1,6 @@
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/model/Feedback.java
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/model/Product.java
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/repository/IProductRepository.java
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/service/ProductService.java
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/InfoshopApplication.java
+/home/almada/infoshop/infoshop-product-webflux/src/main/java/br/ufc/mdcc/infoshop/controller/ProductController.java

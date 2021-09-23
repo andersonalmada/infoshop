@@ -1,0 +1,6 @@
+br/ufc/mdcc/infoshop/model/Feedback.class
+br/ufc/mdcc/infoshop/model/Product.class
+br/ufc/mdcc/infoshop/repository/IProductRepository.class
+br/ufc/mdcc/infoshop/service/ProductService.class
+br/ufc/mdcc/infoshop/controller/ProductController.class
+br/ufc/mdcc/infoshop/InfoshopApplication.class

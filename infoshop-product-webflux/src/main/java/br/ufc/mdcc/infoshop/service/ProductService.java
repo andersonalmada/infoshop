@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,6 +21,8 @@ import br.ufc.mdcc.infoshop.model.Product;
 import br.ufc.mdcc.infoshop.repository.IProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 import reactor.util.function.Tuple2;
 
 @Service
@@ -31,14 +34,30 @@ public class ProductService {
 	@Value("${endpoint.feedbacks}")
 	String endpointFeedbacks;
 
+	WebClient client;
+
 	@Transactional
 	public Mono<Product> addProduct(Product product) {
 		return productRepo.save(product);
 	}
 
+	public WebClient getInstance() {
+		if (client == null) {
+			ConnectionProvider build = ConnectionProvider.builder("almada").maxConnections(2500)
+					.pendingAcquireMaxCount(4000)
+					.build();
+
+			HttpClient httpClient = HttpClient.create(build);
+
+			client = WebClient.builder().clientConnector(new ReactorClientHttpConnector(httpClient)).build();
+		}
+
+		return client;
+	}
+
 	public Flux<Product> getProducts() {
 		try {
-			Flux<Feedback> feedbacks = WebClient.create().get().uri(new URI(endpointFeedbacks))
+			Flux<Feedback> feedbacks = getInstance().get().uri(new URI(endpointFeedbacks))
 					.accept(MediaType.APPLICATION_JSON).retrieve().bodyToFlux(Feedback.class);
 
 			Flux<Product> flux = productRepo.findAll()
@@ -70,11 +89,11 @@ public class ProductService {
 	@Transactional
 	public Mono<Void> removeProduct(Integer id) {
 		try {
-			Mono<Void> delete = WebClient.create().delete().uri(new URI(endpointFeedbacks + "/product/" + id)).retrieve()
-					.bodyToMono(Void.class);
-			
+			Mono<Void> delete = WebClient.create().delete().uri(new URI(endpointFeedbacks + "/product/" + id))
+					.retrieve().bodyToMono(Void.class);
+
 			return Mono.zip(delete, productRepo.deleteById(id)).map(Tuple2::getT1);
-			
+
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

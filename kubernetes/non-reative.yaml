@@ -1,0 +1,178 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: default
+data:
+  postgres_user: postgres #YOUR_USER
+  postgres_password: postgres #YOUR_PASSWORD
+  # postgres_host: <IP_DB_POSTGRES_LOCAL> # PARA USAR POSTGRES COMO POD REMOVA ESSA LINHA
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: default
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 15Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: postgres-pv-claim
+  namespace: default
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+      containers:
+        - image: postgres:10.4-alpine #IMAGE
+          name: postgres
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_password
+            - name: POSTGRES_DB
+              value: projeto #DATABASE NAME
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infoshop-product
+spec:
+  selector:
+    matchLabels:
+      run: infoshop-product
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: infoshop-product
+    spec:
+      containers:
+      - name: infoshop-product
+        image: andersonalmada/infoshop-product:latest
+        ports:
+        - containerPort: 31000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: infoshop-product
+  labels:
+    run: infoshop-product
+spec:
+  type: NodePort
+  ports:
+  - name: tcp-product
+    nodePort: 31000
+    port: 31000
+    protocol: TCP
+    targetPort: 31000
+  selector:
+    run: infoshop-product
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres #NAME_YOUR_SERVICE
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infoshop-feedback
+spec:
+  selector:
+    matchLabels:
+      run: infoshop-feedback
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: infoshop-feedback
+    spec:
+      containers:
+      - name: infoshop-feedback
+        image: andersonalmada/infoshop-feedback:latest
+        ports:
+        - containerPort: 31001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: infoshop-feedback
+  labels:
+    run: infoshop-feedback
+spec:
+  type: NodePort
+  ports:
+  - name: tcp-feedback
+    nodePort: 31001
+    port: 31001
+    protocol: TCP
+    targetPort: 31001
+  selector:
+    run: infoshop-feedback
+

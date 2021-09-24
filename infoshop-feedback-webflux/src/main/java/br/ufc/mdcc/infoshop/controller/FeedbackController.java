@@ -1,8 +1,8 @@
 package br.ufc.mdcc.infoshop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.ResponseEntity.noContent;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufc.mdcc.infoshop.model.Feedback;
+import br.ufc.mdcc.infoshop.model.Product;
 import br.ufc.mdcc.infoshop.service.FeedbackService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,6 +39,11 @@ public class FeedbackController {
 	@RequestMapping(method = RequestMethod.GET, value = "/product/{id}")
 	public Flux<Feedback> getFeedbacksByProduct(@PathVariable("id") Integer id) {
 		return feedbackService.getFeedbacksByProduct(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/product/")
+	public Mono<Product> getFeedbacksByProductMono(@RequestBody Product product) {
+		return feedbackService.getFeedbacksByProduct(product);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

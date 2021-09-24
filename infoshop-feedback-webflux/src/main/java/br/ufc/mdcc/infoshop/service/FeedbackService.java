@@ -1,13 +1,18 @@
 package br.ufc.mdcc.infoshop.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufc.mdcc.infoshop.model.Feedback;
+import br.ufc.mdcc.infoshop.model.Product;
 import br.ufc.mdcc.infoshop.repository.IFeedbackRepository;
+import io.netty.handler.codec.http.HttpContentEncoder.Result;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 @Service
 public class FeedbackService {
@@ -26,6 +31,15 @@ public class FeedbackService {
 
 	public Flux<Feedback> getFeedbacksByProduct(int productId) {
 		return feedRepo.findAllByProductId(productId);
+	}
+	
+	public Mono<Product> getFeedbacksByProduct(Product product) {
+		Mono<Product> setFeedbacks = feedRepo.findAllByProductId(product.getId()).collectList().flatMap(result -> {
+			product.setFeedbacks(result);
+			return Mono.just(product);
+		});
+		
+		return setFeedbacks;
 	}
 	
 	public Mono<Feedback> getFeedback(Integer id) {

@@ -1,9 +1,0 @@
-br/ufc/mdcc/infoshop/model/Ranking.class
-br/ufc/mdcc/infoshop/model/Feedback.class
-br/ufc/mdcc/infoshop/repository/IFeedbackRepository.class
-br/ufc/mdcc/infoshop/InfoshopApplication.class
-br/ufc/mdcc/infoshop/service/FeedbackService.class
-br/ufc/mdcc/infoshop/controller/FeedbackController.class
-br/ufc/mdcc/infoshop/controller/RankingController.class
-br/ufc/mdcc/infoshop/controller/RankingController$2.class
-br/ufc/mdcc/infoshop/controller/RankingController$1.class

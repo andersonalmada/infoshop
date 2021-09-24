@@ -1,7 +1,0 @@
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/controller/FeedbackController.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/repository/IFeedbackRepository.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/model/Feedback.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/model/Ranking.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/controller/RankingController.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/InfoshopApplication.java
-/home/almada/infoshop/infoshop-feedback-webflux/src/main/java/br/ufc/mdcc/infoshop/service/FeedbackService.java

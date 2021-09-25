@@ -1,7 +1,5 @@
 package br.ufc.mdcc.infoshop.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,10 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufc.mdcc.infoshop.model.Feedback;
 import br.ufc.mdcc.infoshop.model.Product;
 import br.ufc.mdcc.infoshop.repository.IFeedbackRepository;
-import io.netty.handler.codec.http.HttpContentEncoder.Result;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 @Service
 public class FeedbackService {
